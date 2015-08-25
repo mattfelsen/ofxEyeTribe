@@ -7,6 +7,36 @@ void testApp::setup()
     
     tet.open();
     // tet.open(6555); //<---- if you want change device port
+//
+//    settings.points.push_back( ofVec2f(0.25, 0.25) );
+//    settings.points.push_back( ofVec2f(0.50, 0.25) );
+//    settings.points.push_back( ofVec2f(0.75, 0.25) );
+//
+//    settings.points.push_back( ofVec2f(0.25, 0.50) );
+//    settings.points.push_back( ofVec2f(0.50, 0.50) );
+//    settings.points.push_back( ofVec2f(0.75, 0.50) );
+//
+//    settings.points.push_back( ofVec2f(0.25, 0.75) );
+//    settings.points.push_back( ofVec2f(0.50, 0.75) );
+//    settings.points.push_back( ofVec2f(0.75, 0.75) );
+
+    settings.points.push_back( ofVec2f(0.1, 0.1) );
+    settings.points.push_back( ofVec2f(0.9, 0.1) );
+    settings.points.push_back( ofVec2f(0.9, 0.9) );
+    settings.points.push_back( ofVec2f(0.1, 0.9) );
+
+    settings.points.push_back( ofVec2f(0.3, 0.3) );
+    settings.points.push_back( ofVec2f(0.7, 0.3) );
+    settings.points.push_back( ofVec2f(0.7, 0.7) );
+    settings.points.push_back( ofVec2f(0.3, 0.7) );
+
+    calibrationTimer.setup(settings.duration);
+    ofAddListener(calibrationTimer.TIMER_COMPLETE, this, &testApp::onCalibrationTimer);
+}
+
+void testApp::update()
+{
+    calibrationTimer.update();
 }
 
 void testApp::draw()
@@ -27,46 +57,62 @@ void testApp::draw()
         }
     }
     
-    
-    
-    // draw gaze data
-    //-----------------------------------------------------------------------------
-    if (tet.isConnected())
-    {
+    if (bDrawDebug && !settings.calibrating) {
         ofFill();
-        
-        // red circle is raw gaze point
-        ofSetColor(ofColor::red);
-        ofCircle(tet.getPoint2dRaw(), 5);
-        
-        // green dot is smoothed gaze point
-        ofSetColor(ofColor::green);
-        ofCircle(tet.getPoint2dAvg(), 10);
-        
-        // when fixated is show orenge circle
-        if (tet.isFix())
-        {
-            ofSetColor(ofColor::orange, 100);
-            ofCircle(tet.getPoint2dAvg(), 40);
+        ofSetColor(ofColor::salmon);
+        for (auto& point : settings.points) {
+            ofCircle(point * ofGetWindowSize(), 30);
         }
-        
-        // and draw data from each eyes
-        ofNoFill();
-        ofSetColor(ofColor::aqua);
-        ofCircle(tet.getLeftEyeRaw(), 5);
-        ofCircle(tet.getRightEyeRaw(), 5);
-        
-        ofSetColor(ofColor::purple);
-        ofCircle(tet.getLeftEyeAvg(), 5);
-        ofCircle(tet.getRightEyeAvg(), 5);
-        
-        ofSetColor(ofColor::yellow);
-        ofCircle(tet.getLeftEyePcenter().x * ofGetWidth(), tet.getLeftEyePcenter().y * ofGetHeight(), 20);
-        ofCircle(tet.getRightEyePcenter().x * ofGetWidth(), tet.getRightEyePcenter().y * ofGetHeight(), 20);
     }
 
-    
-    
+    // draw gaze data
+    //-----------------------------------------------------------------------------
+    if (!settings.calibrating) {
+        if (tet.isConnected())
+        {
+            ofFill();
+            
+            // red circle is raw gaze point
+            ofSetColor(ofColor::red);
+            ofCircle(tet.getPoint2dRaw(), 5);
+            
+            // green dot is smoothed gaze point
+            ofSetColor(ofColor::green);
+            ofCircle(tet.getPoint2dAvg(), 10);
+            
+            // when fixated is show orenge circle
+            if (tet.isFix())
+            {
+                ofSetColor(ofColor::orange, 100);
+                ofCircle(tet.getPoint2dAvg(), 40);
+            }
+            
+            // and draw data from each eyes
+            ofNoFill();
+            ofSetColor(ofColor::aqua);
+            ofCircle(tet.getLeftEyeRaw(), 5);
+            ofCircle(tet.getRightEyeRaw(), 5);
+            
+            ofSetColor(ofColor::purple);
+            ofCircle(tet.getLeftEyeAvg(), 5);
+            ofCircle(tet.getRightEyeAvg(), 5);
+            
+            ofSetColor(ofColor::yellow);
+            ofCircle(tet.getLeftEyePcenter().x * ofGetWidth(), tet.getLeftEyePcenter().y * ofGetHeight(), 20);
+            ofCircle(tet.getRightEyePcenter().x * ofGetWidth(), tet.getRightEyePcenter().y * ofGetHeight(), 20);
+        }
+    } else {
+        ofFill();
+        if (settings.pointStarted) {
+            ofSetColor(ofColor::red);
+            ofCircle(settings.points[settings.index] * ofGetWindowSize(), 40);
+        } else {
+            ofSetColor(ofColor::salmon);
+            ofCircle(settings.points[settings.index+1] * ofGetWindowSize(), 40);
+        }
+    }
+
+
     // get gaze data and server state
     //-----------------------------------------------------------------------------
     gtl::ServerState s = tet.getServerState();
@@ -116,5 +162,70 @@ void testApp::keyPressed(int key)
     if (key == 'o') tet.open();
     if (key == 'c') tet.close();
     if (key == 's') tet.startServer();
+    if (key == 'C') startCalibration();
+    if (key == 'r') tet.printCalibrationResult();
+    if (key == 'd') bDrawDebug = !bDrawDebug;
 }
 
+void testApp::startCalibration()
+{
+    if (settings.calibrating) {
+        tet.getTracker().calibration_abort();
+    }
+
+    settings.calibrating = true;
+    settings.index = -1;
+    settings.pointStarted = false;
+
+    tet.getTracker().calibration_clear();
+    tet.getTracker().calibration_start(settings.points.size());
+
+//    nextCalibrationPoint();
+    calibrationTimer.start(true);
+}
+
+void testApp::onCalibrationTimer(int &args)
+{
+    nextCalibrationPoint();
+}
+
+void testApp::nextCalibrationPoint()
+{
+//    if (settings.index == -1) {
+//        ofLogNotice("Tracker", "Get ready...");
+//        settings.index++;
+//        return;
+//    }
+
+    if (!settings.pointStarted) {
+        settings.index++;
+        ofVec2f point = settings.points[settings.index] * ofGetWindowSize();
+        tet.getTracker().calibration_point_start(point.x, point.y);
+    } else {
+        tet.getTracker().calibration_point_end();
+
+        if (settings.index == settings.points.size()-1) {
+            calibrationTimer.stop();
+            settings.calibrating = false;
+        }
+    }
+    settings.pointStarted = !settings.pointStarted;
+
+//    if (settings.index > 0) {
+////        ofLogNotice("Tracker", "Sending point end");
+//        tet.getTracker().calibration_point_end();
+//    }
+//
+//    if (settings.index < settings.points.size()) {
+//        ofVec2f point = settings.points[settings.index] * ofGetWindowSize();
+////        ofLogNotice("Tracker") << "Sending point start " << settings.index <<  ", " << settings.points[settings.index]
+////         << ", " << point;
+//        tet.getTracker().calibration_point_start(point.x, point.y);
+//    } else {
+////        ofLogNotice("Tracker", "Calibration finished");
+//        settings.calibrating = false;
+//        calibrationTimer.stop();
+//    }
+
+
+}

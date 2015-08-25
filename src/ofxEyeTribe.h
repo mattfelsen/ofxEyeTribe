@@ -11,7 +11,8 @@ protected:
     gtl::GazeData mGazeData;
     gtl::Screen mScreen;
     bool mfAutoUpdate;
-    
+    int calibrationDuration;
+
     ofVec2f point2dToOfVec2d(const gtl::Point2D point2d)
     {
         return ofVec2f(point2d.x, point2d.y);
@@ -102,7 +103,9 @@ public:
     //------------------------------------------------------------------------------------------
     //                                  getter
     //------------------------------------------------------------------------------------------
-    
+
+    gtl::GazeApi& getTracker() { return api; }
+
     /** raw gaze coordinates in pixels @return ofVec2d */
     ofVec2f getPoint2dRaw() { return point2dToOfVec2d(mGazeData.raw); }
     
@@ -154,7 +157,21 @@ public:
     //------------------------------------------------------------------------------------------
     //                                  TODO: calibration
     //------------------------------------------------------------------------------------------
-    
+
+    bool startCalibration(int pointCount = 9, int duration = 500) {
+        calibrationDuration = duration;
+        api.calibration_start(pointCount);
+    }
+
+    bool printCalibrationResult() {
+        gtl::CalibResult result;
+        api.get_calib_result(result);
+        cout << "Calibration result" << endl;
+        cout << "Successful? " << result.result << endl;
+        for (int i = 0; i < result.calibpoints.size(); i++) {
+            cout << i << ": " << result.calibpoints[i].state << endl;
+        }
+    }
     
 };
 
