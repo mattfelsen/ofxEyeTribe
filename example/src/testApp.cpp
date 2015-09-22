@@ -20,6 +20,7 @@ void testApp::setup()
 //    settings.points.push_back( ofVec2f(0.50, 0.75) );
 //    settings.points.push_back( ofVec2f(0.75, 0.75) );
 
+	/*
     settings.points.push_back( ofVec2f(0.1, 0.1) );
     settings.points.push_back( ofVec2f(0.9, 0.1) );
     settings.points.push_back( ofVec2f(0.9, 0.9) );
@@ -29,6 +30,17 @@ void testApp::setup()
     settings.points.push_back( ofVec2f(0.7, 0.3) );
     settings.points.push_back( ofVec2f(0.7, 0.7) );
     settings.points.push_back( ofVec2f(0.3, 0.7) );
+	*/
+
+	settings.points.push_back(ofVec2f(0.25, 0.25));
+	settings.points.push_back(ofVec2f(0.40, 0.25));
+	settings.points.push_back(ofVec2f(0.60, 0.25));
+	settings.points.push_back(ofVec2f(0.75, 0.25));
+
+	settings.points.push_back(ofVec2f(0.25, 0.75));
+	settings.points.push_back(ofVec2f(0.40, 0.75));
+	settings.points.push_back(ofVec2f(0.60, 0.75));
+	settings.points.push_back(ofVec2f(0.75, 0.75));
 
     calibrationTimer.setup(settings.duration);
     ofAddListener(calibrationTimer.TIMER_COMPLETE, this, &testApp::onCalibrationTimer);

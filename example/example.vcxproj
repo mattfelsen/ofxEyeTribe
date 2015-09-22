@@ -95,7 +95,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxEyeTribe\src;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxEyeTribe\src;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient\include;..\..\..\addons\ofxSimpleTimer\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -114,7 +114,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxEyeTribe\src;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxEyeTribe\src;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient\include;..\..\..\addons\ofxSimpleTimer\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -133,7 +133,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxEyeTribe\src;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxEyeTribe\src;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient\include;..\..\..\addons\ofxSimpleTimer\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -155,7 +155,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\..\..\addons\ofxEyeTribe\src;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\addons\ofxEyeTribe\src;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient;..\..\..\addons\ofxEyeTribe\libs\EyeTribeCppClient\include;..\..\..\addons\ofxSimpleTimer\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -171,6 +171,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\ofxSimpleTimer\src\ofxSimpleTimer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\testApp.cpp" />
   </ItemGroup>
@@ -187,6 +188,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\ofxSimpleTimer\src\ofxSimpleTimer.h" />
     <ClInclude Include="..\src\ofxEyeTribe.h" />
     <ClInclude Include="src\testApp.h" />
   </ItemGroup>
