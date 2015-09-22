@@ -163,7 +163,7 @@ public:
         api.calibration_start(pointCount);
     }
 
-    bool printCalibrationResult() {
+    void printCalibrationResult() {
         gtl::CalibResult result;
         api.get_calib_result(result);
         cout << "Calibration result" << endl;
