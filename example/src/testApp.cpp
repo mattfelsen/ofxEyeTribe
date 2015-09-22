@@ -160,7 +160,9 @@ void testApp::draw()
     ss << "f: " << "toggle fulscreen" << endl;
     ss << "o: " << "open(connect)" << endl;
     ss << "c: " << "close(disconnect)" << endl;
-    ss << "s: " << "starting server";
+    ss << "s: " << "starting server" << endl;
+	ss << "C: " << "start calibration flow" << endl;
+	ss << "d: " << "toggle calibration points";
     
     ofSetColor(255, 255, 255);
     ofDrawBitmapString(ss.str(), 20, 20);
